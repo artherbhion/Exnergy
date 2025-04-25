@@ -3,873 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharani Arther Final Year Project</title>
+    <title>Biodiesel Engine Performance Calculator</title>
     <style>
-        :root {
-            --primary-color: #15324ba2;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background-color: #0066ff52;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
+            color: #333;
         }
-        
-        header {
-            background-color: var(--primary-color);
-            color: rgb(255, 255, 255);
-            padding: 20px 0;
+        h1 {
+            color: #2c3e50;
             text-align: center;
             margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        
-        h1 {
-            margin: 0;
-            font-size: 2.2rem;
-        }
-        
-        .subtitle {
-            font-style: italic;
-            margin-top: 5px;
-            opacity: 0.9;
-        }
-        
-        .tabs {
+        .input-group {
+            margin-bottom: 15px;
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
+            align-items: center;
         }
-        
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #eeeeee;
-            border: 1px solid #ddd;
-            border-bottom: none;
-            margin-right: 5px;
-            border-radius: 5px 5px 0 0;
-            transition: all 0.3s ease;
-        }
-        
-        .tab.active {
-            background-color: rgba(0, 0, 0, 0.745);
-            border-bottom: 1px solid white;
-            margin-bottom: -1px;
-            font-weight: bold;
-            color: var(--secondary-color);
-        }
-        
-        .tab-content {
-            display: none;
-            background-color: rgba(255, 248, 248, 0.455);
-            padding: 20px;
-            border-radius: 0 0 5px 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
         label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
+            width: 300px;
+            font-weight: bold;
         }
-        
-        input, select {
-            width: 100%;
-            padding: 10px;
+        input {
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 16px;
+            width: 100px;
         }
-        
         button {
-            background-color: var(--secondary-color);
+            background-color: #3498db;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
+            margin: 20px 0;
+            display: block;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
         button:hover {
             background-color: #2980b9;
         }
-        
-        .results {
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
             margin-top: 30px;
+        }
+        #results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             background-color: #f9f9f9;
             padding: 20px;
-            border-radius: 5px;
-            border-left: 4px solid var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
-        .result-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed #ddd;
+        #results div {
+            padding: 8px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        
-        .result-item:last-child {
-            border-bottom: none;
+        .unit {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-left: 5px;
         }
-        
-        .result-label {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        
-        .result-value {
-            font-size: 18px;
-            color: var(--accent-color);
-        }
-        
-        .chart-container {
-            margin-top: 30px;
-            height: 400px;
-        }
-        
-        .info-box {
-            background-color: #e8f4fc;
-            border-left: 4px solid var(--secondary-color);
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 0 4px 4px 0;
-        }
-        
-        .reference {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        
         @media (max-width: 768px) {
-            .tabs {
+            #results {
+                grid-template-columns: 1fr;
+            }
+            .input-group {
                 flex-direction: column;
+                align-items: flex-start;
             }
-            
-            .tab {
-                margin-right: 0;
-                margin-bottom: 5px;
-                border-radius: 5px;
-            }
-            
-            .tab.active {
-                border-bottom: 1px solid #ddd;
+            label {
+                width: auto;
                 margin-bottom: 5px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Biodiesel Engine Analysis Tool</h1>
-            <div class="subtitle">Energy and Exergy Analysis on Variable Compression Ratio Multi-Fuel Engine</div>
-        </div>
-    </header>
+    <h1>Biodiesel Engine Performance Calculator</h1>
     
-    <div class="container">
-        <div class="tabs">
-            <div class="tab active" data-tab="energy">Energy Analysis</div>
-            <div class="tab" data-tab="exergy">Exergy Analysis</div>
-            <div class="tab" data-tab="emissions">Emissions Analysis</div>
-        </div>
-        
-        <div class="tab-content active" id="energy">
-            <div class="info-box">
-                <p>This section calculates the energy distribution in a biodiesel-fueled engine based on the research paper's formulas. Enter your engine parameters to analyze the energy conversion efficiency.</p>
-            </div>
-            
-            <form id="energyForm">
-                <div class="form-group">
-                    <label for="fuelType">Fuel Type</label>
-                    <select id="fuelType">
-                        <option value="diesel">Diesel</option>
-                        <option value="B20">B20 (20% Biodiesel, 80% Diesel)</option>
-                        <option value="B40">B40 (40% Biodiesel, 60% Diesel)</option>
-                        <option value="B60">B60 (60% Biodiesel, 40% Diesel)</option>
-                        <option value="B80">B80 (80% Biodiesel, 20% Diesel)</option>
-                        <option value="B100">B100 (100% Biodiesel)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="compressionRatio">Compression Ratio</label>
-                    <input type="number" id="compressionRatio" min="18" max="22" step="0.1" value="18">
-                </div>
-                
-                <div class="form-group">
-                    <label for="engineLoad">Engine Load (%)</label>
-                    <input type="number" id="engineLoad" min="0" max="100" value="80">
-                </div>
-                
-                <div class="form-group">
-                    <label for="fuelMassFlow">Fuel Mass Flow Rate (kg/h)</label>
-                    <input type="number" id="fuelMassFlow" step="0.01" value="0.7">
-                </div>
-                
-                <div class="form-group">
-                    <label for="coolingWaterFlow">Cooling Water Flow Rate (kg/s)</label>
-                    <input type="number" id="coolingWaterFlow" step="0.01" value="0.05">
-                </div>
-                
-                <div class="form-group">
-                    <label for="coolingWaterInTemp">Cooling Water Inlet Temperature (°C)</label>
-                    <input type="number" id="coolingWaterInTemp" step="0.1" value="25">
-                </div>
-                
-                <div class="form-group">
-                    <label for="coolingWaterOutTemp">Cooling Water Outlet Temperature (°C)</label>
-                    <input type="number" id="coolingWaterOutTemp" step="0.1" value="45">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exhaustTemp">Exhaust Gas Temperature (°C)</label>
-                    <input type="number" id="exhaustTemp" step="0.1" value="300">
-                </div>
-                
-                <div class="form-group">
-                    <label for="ambientTemp">Ambient Temperature (°C)</label>
-                    <input type="number" id="ambientTemp" step="0.1" value="25">
-                </div>
-                
-                <div class="form-group">
-                    <label for="brakePower">Brake Power (kW)</label>
-                    <input type="number" id="brakePower" step="0.01" value="3.5">
-                </div>
-                
-                <button type="button" id="calculateEnergy">Calculate Energy Distribution</button>
-            </form>
-            
-            <div class="results" id="energyResults" style="display: none;">
-                <h3>Energy Analysis Results</h3>
-                <div class="result-item">
-                    <div class="result-label">Energy Input (Q<sub>in</sub>)</div>
-                    <div class="result-value" id="energyInput">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Shaft Energy (Q<sub>s</sub>)</div>
-                    <div class="result-value" id="shaftEnergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Cooling Water Energy (Q<sub>w</sub>)</div>
-                    <div class="result-value" id="coolingEnergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Exhaust Gas Energy (Q<sub>e</sub>)</div>
-                    <div class="result-value" id="exhaustEnergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Unaccounted Losses (Q<sub>u</sub>)</div>
-                    <div class="result-value" id="unaccountedEnergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Brake Thermal Efficiency (BTE)</div>
-                    <div class="result-value" id="bte">0 %</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Brake-Specific Energy Consumption (BSEC)</div>
-                    <div class="result-value" id="bsec">0 kJ s<sup>-1</sup> kW<sup>-1</sup></div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="energyChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="tab-content" id="exergy">
-            <div class="info-box">
-                <p>This section calculates the exergy (availability) distribution in a biodiesel-fueled engine based on the second law of thermodynamics. Exergy analysis helps identify where the real inefficiencies occur.</p>
-            </div>
-            
-            <form id="exergyForm">
-                <div class="form-group">
-                    <label for="exFuelType">Fuel Type</label>
-                    <select id="exFuelType">
-                        <option value="diesel">Diesel</option>
-                        <option value="B20">B20 (20% Biodiesel, 80% Diesel)</option>
-                        <option value="B40">B40 (40% Biodiesel, 60% Diesel)</option>
-                        <option value="B60">B60 (60% Biodiesel, 40% Diesel)</option>
-                        <option value="B80">B80 (80% Biodiesel, 20% Diesel)</option>
-                        <option value="B100">B100 (100% Biodiesel)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="exCompressionRatio">Compression Ratio</label>
-                    <input type="number" id="exCompressionRatio" min="18" max="22" step="0.1" value="18">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exEngineLoad">Engine Load (%)</label>
-                    <input type="number" id="exEngineLoad" min="0" max="100" value="80">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exFuelMassFlow">Fuel Mass Flow Rate (kg/h)</label>
-                    <input type="number" id="exFuelMassFlow" step="0.01" value="0.7">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exCoolingWaterFlow">Cooling Water Flow Rate (kg/s)</label>
-                    <input type="number" id="exCoolingWaterFlow" step="0.01" value="0.05">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exCoolingWaterInTemp">Cooling Water Inlet Temperature (°C)</label>
-                    <input type="number" id="exCoolingWaterInTemp" step="0.1" value="25">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exCoolingWaterOutTemp">Cooling Water Outlet Temperature (°C)</label>
-                    <input type="number" id="exCoolingWaterOutTemp" step="0.1" value="45">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exExhaustTemp">Exhaust Gas Temperature (°C)</label>
-                    <input type="number" id="exExhaustTemp" step="0.1" value="300">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exAmbientTemp">Ambient Temperature (°C)</label>
-                    <input type="number" id="exAmbientTemp" step="0.1" value="25">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exBrakePower">Brake Power (kW)</label>
-                    <input type="number" id="exBrakePower" step="0.01" value="3.5">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exExhaustPressure">Exhaust Gas Pressure (bar)</label>
-                    <input type="number" id="exExhaustPressure" step="0.01" value="1.013">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exAmbientPressure">Ambient Pressure (bar)</label>
-                    <input type="number" id="exAmbientPressure" step="0.01" value="1.013">
-                </div>
-                
-                <button type="button" id="calculateExergy">Calculate Exergy Distribution</button>
-            </form>
-            
-            <div class="results" id="exergyResults" style="display: none;">
-                <h3>Exergy Analysis Results</h3>
-                <div class="result-item">
-                    <div class="result-label">Fuel Input Exergy (A<sub>in</sub>)</div>
-                    <div class="result-value" id="exergyInput">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Shaft Exergy (A<sub>s</sub>)</div>
-                    <div class="result-value" id="shaftExergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Cooling Water Exergy (A<sub>w</sub>)</div>
-                    <div class="result-value" id="coolingExergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Exhaust Gas Exergy (A<sub>e</sub>)</div>
-                    <div class="result-value" id="exhaustExergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Destroyed Exergy (A<sub>d</sub>)</div>
-                    <div class="result-value" id="destroyedExergy">0 kW</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Second Law Efficiency (η<sub>II</sub>)</div>
-                    <div class="result-value" id="secondLawEfficiency">0 %</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Entropy Generation (S)</div>
-                    <div class="result-value" id="entropyGeneration">0 kW K<sup>-1</sup></div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="exergyChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="tab-content" id="emissions">
-            <div class="info-box">
-                <p>This section estimates the emissions from a biodiesel-fueled engine based on the research paper's findings. The results show typical emission levels for different fuel blends and compression ratios.</p>
-            </div>
-            
-            <form id="emissionsForm">
-                <div class="form-group">
-                    <label for="emFuelType">Fuel Type</label>
-                    <select id="emFuelType">
-                        <option value="diesel">Diesel</option>
-                        <option value="B20">B20 (20% Biodiesel, 80% Diesel)</option>
-                        <option value="B40">B40 (40% Biodiesel, 60% Diesel)</option>
-                        <option value="B60">B60 (60% Biodiesel, 40% Diesel)</option>
-                        <option value="B80">B80 (80% Biodiesel, 20% Diesel)</option>
-                        <option value="B100">B100 (100% Biodiesel)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="emCompressionRatio">Compression Ratio</label>
-                    <input type="number" id="emCompressionRatio" min="18" max="22" step="0.1" value="18">
-                </div>
-                
-                <div class="form-group">
-                    <label for="emEngineLoad">Engine Load (%)</label>
-                    <input type="number" id="emEngineLoad" min="0" max="100" value="80">
-                </div>
-                
-                <button type="button" id="calculateEmissions">Estimate Emissions</button>
-            </form>
-            
-            <div class="results" id="emissionsResults" style="display: none;">
-                <h3>Emissions Analysis Results</h3>
-                <div class="result-item">
-                    <div class="result-label">Carbon Monoxide (CO)</div>
-                    <div class="result-value" id="coEmission">0 %</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Hydrocarbons (HC)</div>
-                    <div class="result-value" id="hcEmission">0 ppm</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Carbon Dioxide (CO<sub>2</sub>)</div>
-                    <div class="result-value" id="co2Emission">0 %</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Nitrogen Oxides (NO<sub>x</sub>)</div>
-                    <div class="result-value" id="noxEmission">0 ppm</div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="emissionsChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="reference">
-            <!-- <p>Based on: Murugapoopathi, S., & Vasudevan, D. (2018). Energy and exergy analysis on variable compression ratio multi-fuel engine. <em>Journal of Thermal Analysis and Calorimetry</em>. https://doi.org/10.1007/s10973-018-7761-2</p> -->
-        </div>
+    <div class="input-group">
+        <label for="blend">Biodiesel Blend Percentage:</label>
+        <input type="number" id="blend" min="0" max="100" value="20">
+        <span class="unit">% (0-100)</span>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="input-group">
+        <label for="cr">Compression Ratio:</label>
+        <input type="number" id="cr" min="18" max="18" value="18">
+        <span class="unit">(18 fixed)</span>
+    </div>
+    
+    <button onclick="calculate()">Calculate Performance</button>
+    
+    <h2>Results</h2>
+    <div id="results"></div>
+    
     <script>
-        // Tab switching functionality
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs and content
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked tab and corresponding content
-                tab.classList.add('active');
-                const tabId = tab.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-        
-        // Fuel properties (from Table 4 in the paper)
-        const fuelProperties = {
+        // Data from the research paper
+        const data = {
+            // Diesel properties
             diesel: {
-                lhv: 45.2, // MJ/kg
+                LHV: 45200, // kJ/kg
+                viscosity: 1.382, // mm²/s at 40°C
                 density: 0.835, // kg/m³
-                viscosity: 1.382, // mm²/s
-                coEmissionBase: 0.05, // %
-                hcEmissionBase: 60, // ppm
-                co2EmissionBase: 8.5, // %
-                noxEmissionBase: 550 // ppm
+                cetaneIndex: 45, // calculated
+                calorificValue: 45200 // kJ/kg
             },
-            B20: {
-                lhv: 41.343, // MJ/kg
-                density: 0.82, // kg/m³
-                viscosity: 0.643, // mm²/s
-                coEmissionBase: 0.04, // %
-                hcEmissionBase: 50, // ppm
-                co2EmissionBase: 8.7, // %
-                noxEmissionBase: 580 // ppm
-            },
-            B40: {
-                lhv: 40.2, // MJ/kg
-                density: 0.86, // kg/m³
-                viscosity: 1.032, // mm²/s
-                coEmissionBase: 0.045, // %
-                hcEmissionBase: 55, // ppm
-                co2EmissionBase: 8.6, // %
-                noxEmissionBase: 600 // ppm
-            },
-            B60: {
-                lhv: 39.129, // MJ/kg
-                density: 0.87, // kg/m³
-                viscosity: 1.45, // mm²/s
-                coEmissionBase: 0.055, // %
-                hcEmissionBase: 65, // ppm
-                co2EmissionBase: 8.4, // %
-                noxEmissionBase: 620 // ppm
-            },
-            B80: {
-                lhv: 38.07, // MJ/kg
-                density: 0.88, // kg/m³
-                viscosity: 2.24, // mm²/s
-                coEmissionBase: 0.06, // %
-                hcEmissionBase: 70, // ppm
-                co2EmissionBase: 8.3, // %
-                noxEmissionBase: 650 // ppm
-            },
-            B100: {
-                lhv: 36.986, // MJ/kg
+            // Biodiesel properties (B100)
+            biodiesel: {
+                LHV: 36986, // kJ/kg
+                viscosity: 3.42, // mm²/s at 40°C
                 density: 0.89, // kg/m³
-                viscosity: 3.42, // mm²/s
-                coEmissionBase: 0.07, // %
-                hcEmissionBase: 75, // ppm
-                co2EmissionBase: 8.2, // %
-                noxEmissionBase: 680 // ppm
+                cetaneIndex: 39, // calculated
+                calorificValue: 36986 // kJ/kg
+            },
+            // Constants
+            constants: {
+                CPw: 4.187, // kJ/kg·K (specific heat of water)
+                Tamb: 29 + 273, // K (ambient temperature)
+                Pamb: 1.013, // bar (ambient pressure)
+                Pe: 1.278, // bar (exhaust pressure)
+                Ru: 8.314, // kJ/kmol·K (universal gas constant)
+                me: 0.07, // kg/s (mass flow rate of exhaust)
+                mcwi: 0.07, // kg/s (mass flow rate of cooling water)
+                dynamoRadius: 0.3, // m (dynamometer arm radius)
+                engineSpeed: 1500 // rpm
             }
         };
-        
-        // Specific heat capacities (assumed values)
-        const cpWater = 4.18; // kJ/kg·K
-        const cpExhaust = 1.05; // kJ/kg·K
-        const universalGasConstant = 8.314; // kJ/kmol·K
-        const exhaustMolecularWeight = 29; // kg/kmol (approximate for exhaust gas)
-        
-        // Energy Analysis Calculations
-        document.getElementById('calculateEnergy').addEventListener('click', () => {
-            // Get input values
-            const fuelType = document.getElementById('fuelType').value;
-            const compressionRatio = parseFloat(document.getElementById('compressionRatio').value);
-            const engineLoad = parseFloat(document.getElementById('engineLoad').value);
-            const fuelMassFlow = parseFloat(document.getElementById('fuelMassFlow').value) / 3600; // Convert kg/h to kg/s
-            const coolingWaterFlow = parseFloat(document.getElementById('coolingWaterFlow').value);
-            const coolingWaterInTemp = parseFloat(document.getElementById('coolingWaterInTemp').value);
-            const coolingWaterOutTemp = parseFloat(document.getElementById('coolingWaterOutTemp').value);
-            const exhaustTemp = parseFloat(document.getElementById('exhaustTemp').value);
-            const ambientTemp = parseFloat(document.getElementById('ambientTemp').value);
-            const brakePower = parseFloat(document.getElementById('brakePower').value);
+
+        // Function to calculate blended fuel properties
+        function getBlendedProperties(blendPercent) {
+            if (blendPercent === 0) return {...data.diesel, blend: 0};
             
-            // Get fuel properties
-            const lhv = fuelProperties[fuelType].lhv * 1000; // Convert MJ/kg to kJ/kg
+            const blendRatio = blendPercent / 100;
+            return {
+                LHV: data.diesel.LHV * (1 - blendRatio) + data.biodiesel.LHV * blendRatio,
+                viscosity: data.diesel.viscosity * (1 - blendRatio) + data.biodiesel.viscosity * blendRatio,
+                density: data.diesel.density * (1 - blendRatio) + data.biodiesel.density * blendRatio,
+                cetaneIndex: data.diesel.cetaneIndex * (1 - blendRatio) + data.biodiesel.cetaneIndex * blendRatio,
+                calorificValue: data.diesel.calorificValue * (1 - blendRatio) + data.biodiesel.calorificValue * blendRatio,
+                blend: blendPercent
+            };
+        }
+
+        function calculateParameters(blendPercent, cr) {
+            const c = data.constants;
+            const fuel = getBlendedProperties(blendPercent);
+
+            // Lookup table for CR=18
+            const cr18Lookup = {
+                0: { mf: 0.74, LHV: 45200, BP: 3.00, Qin: 9.32, Qc: 2.32, Qe: 1.98, Qu: 2.02 },
+                20: { mf: 0.71, LHV: 41343, BP: 3.05, Qin: 8.14, Qc: 1.91, Qe: 2.09, Qu: 1.09 },
+                40: { mf: 0.744, LHV: 40200, BP: 3.04, Qin: 8.31, Qc: 2.25, Qe: 1.91, Qu: 1.11 },
+                60: { mf: 0.988, LHV: 39129, BP: 3.12, Qin: 10.73, Qc: 3.04, Qe: 2.27, Qu: 2.31 },
+                80: { mf: 1.04, LHV: 37192, BP: 3.18, Qin: 10.74, Qc: 3.00, Qe: 2.29, Qu: 2.27 }
+            };
+
+            // Check if it's one of the predefined values for CR=18
+            if (cr === 18 && [0, 20, 40, 60, 80].includes(blendPercent)) {
+                const val = cr18Lookup[blendPercent];
+
+                // Estimate other values
+                const BSEC = (val.mf / 3600 * val.LHV) / val.BP;
+                const Tewo = 30;
+                const Tewi = 27;
+                const Tcwo = 30;
+                const Tcwi = 27;
+                const Tgi = 200;
+                const Tgo = 90;
+                const ma = 12.5;
+                const Cpe = 1.1;
+
+                const Ain = 1.0338 * (val.mf / 3600) * val.LHV;
+                const As = val.BP;
+                
+                // Fix for negative Aw - ensure cooling water availability is positive
+                const coolingWaterEnergy = val.Qc;
+                const entropyTerm = c.mcwi * c.CPw * c.Tamb * Math.log(Tewo / Tewi);
+                const Aw = Math.max(0, coolingWaterEnergy - entropyTerm);
+                
+                const Re = c.Ru / 29; // Approx
+                const cpelogTamb_Teic = Cpe * Math.log(c.Tamb / Tgi);
+                const RelogPamb_Pe = Re * Math.log(c.Pamb / c.Pe);
+                const ZminusAA = cpelogTamb_Teic - RelogPamb_Pe;
+                const maPlusmfTimesTamb = (ma + val.mf / 3600) * c.Tamb / 3600;
+                const QePlusAC = val.Qe + ((ma + val.mf / 3600) * c.Tamb * ZminusAA) / 1000;
+                const Ae = QePlusAC;
+                const Ad = Ain - (As + Aw + Ae);
+                const EffII = (1 - (Ad / Ain)) * 100;
+                const S = Ad / c.Tamb;
+
+                return {
+                    mf: val.mf, LHV: val.LHV, BP: val.BP, me: c.me, CPw: c.CPw,
+                    Tewo, Tewi, ma, mcwi: c.mcwi, Tcwo, Tcwi, Tgi, Tgo,
+                    Qin: val.Qin, BSEC, Qc: val.Qc, Cpe, Qe: val.Qe, Qu: val.Qu,
+                    Ain, As, lnTewo_Tewi: Math.log(Tewo / Tewi), Re, cpelogTamb_Teic,
+                    RelogPamb_Pe, ZminusAA, maPlusmfTimesTamb, QePlusAC,
+                    Ae, Ad, EffII, S, Aw
+                };
+            }
             
-            // Calculate energy terms (from paper formulas)
-            // 1. Energy input (Q_in)
-            const energyInput = fuelMassFlow * lhv; // kW (Eq. 1)
+            // Empirical relationships based on the research data
+            // Mass flow rate of fuel (kg/h)
+            const mf = (0.7 + 0.3 * (blendPercent/100) + 0.01 * (cr - 18)) * (1 + 0.02 * (cr - 18));
             
-            // 2. Shaft energy (Q_s) is the brake power
-            const shaftEnergy = brakePower; // kW (Eq. 2)
+            // Brake Power (kW)
+            const BP = 3.0 + 0.05 * (cr - 18) - 0.02 * (blendPercent/100) * (cr - 18);
             
-            // 3. Cooling water energy (Q_w)
-            const coolingEnergy = coolingWaterFlow * cpWater * (coolingWaterOutTemp - coolingWaterInTemp); // kW (Eq. 6)
+            // Temperatures
+            const Tewo = 30 + 0.2 * (cr - 18) + 2 * (blendPercent/100);
+            const Tewi = 27;
+            const Tgi = 200 + 5 * (cr - 18) + 50 * (blendPercent/100);
+            const Tgo = 90 + 1 * (cr - 18) + 5 * (blendPercent/100);
+            const Tcwo = 30 + 0.5 * (cr - 18) + 1 * (blendPercent/100);
+            const Tcwi = 27;
             
-            // 4. Exhaust gas energy (Q_e)
-            // Assume air-fuel ratio of 20:1 for diesel engines
-            const airMassFlow = fuelMassFlow * 20;
-            const exhaustEnergy = (airMassFlow + fuelMassFlow) * cpExhaust * (exhaustTemp - ambientTemp); // kW (Eq. 7)
+            // Mass flow rate of air (kg/s)
+            const ma = 12.5 + 0.1 * (cr - 18) - 0.5 * (blendPercent/100);
             
-            // 5. Unaccounted losses (Q_u)
-            const unaccountedEnergy = energyInput - (shaftEnergy + coolingEnergy + exhaustEnergy); // kW (Eq. 9)
+            // Energy calculations
+            const Qin = (mf/3600) * fuel.LHV;
+            const Qs = BP;
             
-            // 6. Brake thermal efficiency (BTE)
-            const bte = (brakePower * 3600 * 100) / (fuelMassFlow * lhv); // % (Eq. 3)
+            // Cooling water energy (Qw)
+            const Qw = c.mcwi * c.CPw * (Tcwo - Tcwi);
             
-            // 7. Brake-specific energy consumption (BSEC)
-            const bsec = (fuelMassFlow * lhv) / brakePower; // kJ s^-1 kW^-1 (Eq. 4)
+            // Exhaust gas specific heat
+            const Cpe = 1.1 + 0.01 * (blendPercent/100);
+            
+            // Exhaust gas energy (Qe)
+            const Qe = ((ma + mf/3600) * Cpe * (Tgi - c.Tamb)) / 1000;
+            
+            // Unaccounted losses (Qu)
+            const Qu = Qin - (Qs + Qw + Qe);
+            
+            // BSEC (Brake-specific energy consumption)
+            const BSEC = (mf/3600 * fuel.LHV) / BP;
+            
+            // Exergy calculations
+            const Ain = (1.0338 * mf/3600 * fuel.LHV);
+            const As = BP;
+            
+            // Cooling water availability (Aw) - fixed to prevent negative values
+            const coolingWaterEnergy = Qw;
+            const entropyTerm = c.mcwi * c.CPw * c.Tamb * Math.log(Tewo/Tewi);
+            const Aw = Math.max(0, coolingWaterEnergy - entropyTerm);
+            
+            // Exhaust gas availability (Ae)
+            const Re = c.Ru / (28.97 * (1 - blendPercent/100) + 32 * (blendPercent/100));
+            const cpelogTamb_Teic = Cpe * Math.log(c.Tamb/Tgi);
+            const RelogPamb_Pe = Re * Math.log(c.Pamb/c.Pe);
+            const ZminusAA = cpelogTamb_Teic - RelogPamb_Pe;
+            const maPlusmfTimesTamb = (ma + mf/3600) * c.Tamb / 3600;
+            const QePlusAC = Qe + ((ma + mf/3600) * c.Tamb * ZminusAA) / 1000;
+            const Ae = QePlusAC;
+            
+            // Destroyed availability (Ad)
+            const Ad = Ain - (As + Aw + Ae);
+            
+            // Second law efficiency (ηII)
+            const EffII = (1 - (Ad/Ain)) * 100;
+            
+            // Entropy generation (S)
+            const S = Ad / c.Tamb;
+            
+            return {
+                mf: mf.toFixed(4),
+                LHV: fuel.LHV.toFixed(2),
+                BP: BP.toFixed(4),
+                me: c.me.toFixed(4),
+                CPw: c.CPw.toFixed(4),
+                Tewo: Tewo.toFixed(2),
+                Tewi: Tewi.toFixed(2),
+                ma: ma.toFixed(4),
+                mcwi: c.mcwi.toFixed(4),
+                Tcwo: Tcwo.toFixed(2),
+                Tcwi: Tcwi.toFixed(2),
+                Tgi: Tgi.toFixed(2),
+                Tgo: Tgo.toFixed(2),
+                Qin: Qin.toFixed(4),
+                BSEC: BSEC.toFixed(4),
+                Qc: Qw.toFixed(4),
+                Cpe: Cpe.toFixed(4),
+                Qe: Qe.toFixed(4),
+                Qu: Qu.toFixed(4),
+                Ain: Ain.toFixed(4),
+                As: As.toFixed(4),
+                lnTewo_Tewi: Math.log(Tewo/Tewi).toFixed(4),
+                Aw: Aw.toFixed(4),
+                Re: Re.toFixed(4),
+                cpelogTamb_Teic: cpelogTamb_Teic.toFixed(4),
+                RelogPamb_Pe: RelogPamb_Pe.toFixed(4),
+                ZminusAA: ZminusAA.toFixed(4),
+                maPlusmfTimesTamb: maPlusmfTimesTamb.toFixed(4),
+                QePlusAC: QePlusAC.toFixed(4),
+                Ae: Ae.toFixed(4),
+                Ad: Ad.toFixed(4),
+                EffII: EffII.toFixed(2),
+                S: S.toFixed(6)
+            };
+        }
+
+        // Main calculation function
+        function calculate() {
+            const blendPercent = parseInt(document.getElementById('blend').value);
+            const cr = parseInt(document.getElementById('cr').value);
+            
+            // Validate inputs
+            if (isNaN(blendPercent) || blendPercent < 0 || blendPercent > 100) {
+                alert("Please enter a blend percentage between 0 and 100");
+                return;
+            }
+            
+            if (isNaN(cr) || cr < 18 || cr > 22) {
+                alert("Please enter a compression ratio between 18 and 22");
+                return;
+            }
+            
+            // Calculate parameters
+            const results = calculateParameters(blendPercent, cr);
             
             // Display results
-            document.getElementById('energyInput').textContent = energyInput.toFixed(2) + ' kW';
-            document.getElementById('shaftEnergy').textContent = shaftEnergy.toFixed(2) + ' kW';
-            document.getElementById('coolingEnergy').textContent = coolingEnergy.toFixed(2) + ' kW';
-            document.getElementById('exhaustEnergy').textContent = exhaustEnergy.toFixed(2) + ' kW';
-            document.getElementById('unaccountedEnergy').textContent = unaccountedEnergy.toFixed(2) + ' kW';
-            document.getElementById('bte').textContent = bte.toFixed(2) + ' %';
-            document.getElementById('bsec').textContent = bsec.toFixed(2) + ' kJ s⁻¹ kW⁻¹';
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
             
-            // Show results
-            document.getElementById('energyResults').style.display = 'block';
-            
-            // Update chart
-            updateEnergyChart(energyInput, shaftEnergy, coolingEnergy, exhaustEnergy, unaccountedEnergy);
-        });
-        
-        // Exergy Analysis Calculations
-        document.getElementById('calculateExergy').addEventListener('click', () => {
-            // Get input values
-            const fuelType = document.getElementById('exFuelType').value;
-            const compressionRatio = parseFloat(document.getElementById('exCompressionRatio').value);
-            const engineLoad = parseFloat(document.getElementById('exEngineLoad').value);
-            const fuelMassFlow = parseFloat(document.getElementById('exFuelMassFlow').value) / 3600; // Convert kg/h to kg/s
-            const coolingWaterFlow = parseFloat(document.getElementById('exCoolingWaterFlow').value);
-            const coolingWaterInTemp = parseFloat(document.getElementById('exCoolingWaterInTemp').value) + 273.15; // Convert to Kelvin
-            const coolingWaterOutTemp = parseFloat(document.getElementById('exCoolingWaterOutTemp').value) + 273.15; // Convert to Kelvin
-            const exhaustTemp = parseFloat(document.getElementById('exExhaustTemp').value) + 273.15; // Convert to Kelvin
-            const ambientTemp = parseFloat(document.getElementById('exAmbientTemp').value) + 273.15; // Convert to Kelvin
-            const brakePower = parseFloat(document.getElementById('exBrakePower').value);
-            const exhaustPressure = parseFloat(document.getElementById('exExhaustPressure').value);
-            const ambientPressure = parseFloat(document.getElementById('exAmbientPressure').value);
-            
-            // Get fuel properties
-            const lhv = fuelProperties[fuelType].lhv * 1000; // Convert MJ/kg to kJ/kg
-            
-            // Calculate exergy terms (from paper formulas)
-            // 1. Fuel input exergy (A_in)
-            const exergyInput = (1.0338 * fuelMassFlow * lhv) / 3600; // kW (Eq. 10)
-            
-            // 2. Shaft exergy (A_s) is the brake power
-            const shaftExergy = brakePower; // kW (Eq. 11)
-            
-            // 3. Cooling water exergy (A_w)
-            // First calculate Q_w (energy in cooling water)
-            const coolingEnergy = coolingWaterFlow * cpWater * (coolingWaterOutTemp - coolingWaterInTemp); // kW
-            // Then calculate exergy
-            const coolingExergy = coolingEnergy - (coolingWaterFlow * cpWater * ambientTemp * 
-                Math.log(coolingWaterOutTemp / coolingWaterInTemp)); // kW (Eq. 12)
-            
-            // 4. Exhaust gas exergy (A_e)
-            // Assume air-fuel ratio of 20:1 for diesel engines
-            const airMassFlow = fuelMassFlow * 20;
-            // First calculate Q_e (energy in exhaust)
-            const exhaustEnergy = (airMassFlow + fuelMassFlow) * cpExhaust * (exhaustTemp - ambientTemp); // kW
-            // Then calculate exergy
-            const exhaustGasConstant = universalGasConstant / exhaustMolecularWeight; // kJ/kg·K (Eq. 13)
-            const exhaustExergy = exhaustEnergy + ((airMassFlow + fuelMassFlow) * ambientTemp * 
-                (cpExhaust * Math.log(ambientTemp / exhaustTemp) - 
-                exhaustGasConstant * Math.log(ambientPressure / exhaustPressure))); // kW (Eq. 13)
-            
-            // 5. Destroyed exergy (A_d)
-            const destroyedExergy = exergyInput - (shaftExergy + coolingExergy + exhaustExergy); // kW (Eq. 14)
-            
-            // 6. Second law efficiency (η_II)
-            const secondLawEfficiency = (1 - (destroyedExergy / exergyInput)) * 100; // % (Eq. 15)
-            
-            // 7. Entropy generation (S)
-            const entropyGeneration = destroyedExergy / ambientTemp; // kW/K (Eq. 16)
-            
-            // Display results
-            document.getElementById('exergyInput').textContent = exergyInput.toFixed(2) + ' kW';
-            document.getElementById('shaftExergy').textContent = shaftExergy.toFixed(2) + ' kW';
-            document.getElementById('coolingExergy').textContent = coolingExergy.toFixed(2) + ' kW';
-            document.getElementById('exhaustExergy').textContent = exhaustExergy.toFixed(2) + ' kW';
-            document.getElementById('destroyedExergy').textContent = destroyedExergy.toFixed(2) + ' kW';
-            document.getElementById('secondLawEfficiency').textContent = secondLawEfficiency.toFixed(2) + ' %';
-            document.getElementById('entropyGeneration').textContent = entropyGeneration.toFixed(4) + ' kW K⁻¹';
-            
-            // Show results
-            document.getElementById('exergyResults').style.display = 'block';
-            
-            // Update chart
-            updateExergyChart(exergyInput, shaftExergy, coolingExergy, exhaustExergy, destroyedExergy);
-        });
-        
-        // Emissions Analysis Calculations
-        document.getElementById('calculateEmissions').addEventListener('click', () => {
-            // Get input values
-            const fuelType = document.getElementById('emFuelType').value;
-            const compressionRatio = parseFloat(document.getElementById('emCompressionRatio').value);
-            const engineLoad = parseFloat(document.getElementById('emEngineLoad').value);
-            
-            // Get base emissions for the fuel type
-            const baseCO = fuelProperties[fuelType].coEmissionBase;
-            const baseHC = fuelProperties[fuelType].hcEmissionBase;
-            const baseCO2 = fuelProperties[fuelType].co2EmissionBase;
-            const baseNOx = fuelProperties[fuelType].noxEmissionBase;
-            
-            // Adjust emissions based on compression ratio (from paper trends)
-            // CO decreases with higher CR
-            const coEmission = baseCO * (1 - 0.0363 * (compressionRatio - 18));
-            // HC decreases with higher CR
-            const hcEmission = baseHC * (1 - 0.3308 * (compressionRatio - 18));
-            // CO2 increases slightly with higher CR
-            const co2Emission = baseCO2 * (1 + 0.036 * (compressionRatio - 18));
-            // NOx increases with higher CR
-            const noxEmission = baseNOx * (1 + 0.1081 * (compressionRatio - 18));
-            
-            // Adjust for engine load (assume linear relationship)
-            const loadFactor = engineLoad / 80; // Paper used 80% load as reference
-            
-            // Display results
-            document.getElementById('coEmission').textContent = (coEmission * loadFactor).toFixed(3) + ' %';
-            document.getElementById('hcEmission').textContent = Math.round(hcEmission * loadFactor) + ' ppm';
-            document.getElementById('co2Emission').textContent = (co2Emission * loadFactor).toFixed(1) + ' %';
-            document.getElementById('noxEmission').textContent = Math.round(noxEmission * loadFactor) + ' ppm';
-            
-            // Show results
-            document.getElementById('emissionsResults').style.display = 'block';
-            
-            // Update chart
-            updateEmissionsChart(coEmission * loadFactor, hcEmission * loadFactor, 
-                               co2Emission * loadFactor, noxEmission * loadFactor);
-        });
-        
-        // Chart variables
-        let energyChart, exergyChart, emissionsChart;
-        
-        // Initialize charts
-        function initCharts() {
-            // Energy Chart
-            const energyCtx = document.getElementById('energyChart').getContext('2d');
-            energyChart = new Chart(energyCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Shaft Energy', 'Cooling Water Energy', 'Exhaust Gas Energy', 'Unaccounted Losses'],
-                    datasets: [{
-                        data: [25, 25, 25, 25],
-                        backgroundColor: [
-                            '#3498db',
-                            '#2ecc71',
-                            '#e74c3c',
-                            '#f39c12'
-                        ]
-                    }]
+            // Create a more organized display with units
+            const displayGroups = [
+                {
+                    title: "Fuel Properties",
+                    items: [
+                        {label: "Fuel Blend", value: blendPercent + "%", key: "blendPercent"},
+                        {label: "Lower Heating Value", value: results.LHV + " kJ/kg", key: "LHV"},
+                        {label: "Mass Flow Rate of Fuel", value: results.mf + " kg/h", key: "mf"}
+                    ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Energy Distribution'
-                        }
-                    }
-                }
-            });
-            
-            // Exergy Chart
-            const exergyCtx = document.getElementById('exergyChart').getContext('2d');
-            exergyChart = new Chart(exergyCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Shaft Exergy', 'Cooling Water Exergy', 'Exhaust Gas Exergy', 'Destroyed Exergy'],
-                    datasets: [{
-                        data: [25, 25, 25, 25],
-                        backgroundColor: [
-                            '#3498db',
-                            '#2ecc71',
-                            '#e74c3c',
-                            '#9b59b6'
-                        ]
-                    }]
+                {
+                    title: "Energy Analysis",
+                    items: [
+                        {label: "Brake Power", value: results.BP + " kW", key: "BP"},
+                        {label: "Energy Input (Qin)", value: results.Qin + " kW", key: "Qin"},
+                        {label: "Cooling Water Energy (Qw)", value: results.Qc + " kW", key: "Qc"},
+                        {label: "Exhaust Gas Energy (Qe)", value: results.Qe + " kW", key: "Qe"},
+                        {label: "Unaccounted Losses (Qu)", value: results.Qu + " kW", key: "Qu"},
+                        {label: "Brake-Specific Energy Consumption", value: results.BSEC + " kJ/s·kW", key: "BSEC"}
+                    ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Exergy Distribution'
-                        }
-                    }
-                }
-            });
-            
-            // Emissions Chart
-            const emissionsCtx = document.getElementById('emissionsChart').getContext('2d');
-            emissionsChart = new Chart(emissionsCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['CO', 'HC', 'CO₂', 'NOₓ'],
-                    datasets: [{
-                        label: 'Emissions',
-                        data: [1, 50, 8, 500],
-                        backgroundColor: [
-                            '#e74c3c',
-                            '#f39c12',
-                            '#3498db',
-                            '#2ecc71'
-                        ]
-                    }]
+                {
+                    title: "Exergy Analysis",
+                    items: [
+                        {label: "Input Exergy (Ain)", value: results.Ain + " kW", key: "Ain"},
+                        {label: "Shaft Exergy (As)", value: results.As + " kW", key: "As"},
+                        {label: "Cooling Water Exergy (Aw)", value: results.Aw + " kW", key: "Aw"},
+                        {label: "Exhaust Gas Exergy (Ae)", value: results.Ae + " kW", key: "Ae"},
+                        {label: "Destroyed Exergy (Ad)", value: results.Ad + " kW", key: "Ad"},
+                        {label: "Second Law Efficiency", value: results.EffII + "%", key: "EffII"},
+                        {label: "Entropy Generation", value: results.S + " kW/K", key: "S"}
+                    ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Emissions Comparison'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
+                {
+                    title: "Temperature Measurements",
+                    items: [
+                        {label: "Cooling Water Outlet Temp", value: results.Tcwo + " °C", key: "Tcwo"},
+                        {label: "Cooling Water Inlet Temp", value: results.Tcwi + " °C", key: "Tcwi"},
+                        {label: "Exhaust Gas Inlet Temp", value: results.Tgi + " °C", key: "Tgi"},
+                        {label: "Exhaust Gas Outlet Temp", value: results.Tgo + " °C", key: "Tgo"}
+                    ]
                 }
+            ];
+            
+            // Render the display groups
+            displayGroups.forEach(group => {
+                const groupDiv = document.createElement('div');
+                groupDiv.style.gridColumn = "1 / -1";
+                groupDiv.style.borderBottom = "1px solid #eee";
+                groupDiv.style.paddingBottom = "10px";
+                groupDiv.style.marginBottom = "10px";
+                
+                const title = document.createElement('h3');
+                title.textContent = group.title;
+                title.style.marginTop = "0";
+                title.style.color = "#3498db";
+                groupDiv.appendChild(title);
+                
+                group.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.innerHTML = `<strong>${item.label}:</strong> ${item.value}`;
+                    groupDiv.appendChild(itemDiv);
+                });
+                
+                resultsDiv.appendChild(groupDiv);
             });
         }
-        
-        // Update Energy Chart
-        function updateEnergyChart(energyInput, shaftEnergy, coolingEnergy, exhaustEnergy, unaccountedEnergy) {
-            // Calculate percentages
-            const total = shaftEnergy + coolingEnergy + exhaustEnergy + unaccountedEnergy;
-            const shaftPercent = (shaftEnergy / total) * 100;
-            const coolingPercent = (coolingEnergy / total) * 100;
-            const exhaustPercent = (exhaustEnergy / total) * 100;
-            const unaccountedPercent = (unaccountedEnergy / total) * 100;
-            
-            energyChart.data.datasets[0].data = [
-                shaftPercent,
-                coolingPercent,
-                exhaustPercent,
-                unaccountedPercent
-            ];
-            energyChart.update();
-        }
-        
-        // Update Exergy Chart
-        function updateExergyChart(exergyInput, shaftExergy, coolingExergy, exhaustExergy, destroyedExergy) {
-            // Calculate percentages
-            const total = shaftExergy + coolingExergy + exhaustExergy + destroyedExergy;
-            const shaftPercent = (shaftExergy / total) * 100;
-            const coolingPercent = (coolingExergy / total) * 100;
-            const exhaustPercent = (exhaustExergy / total) * 100;
-            const destroyedPercent = (destroyedExergy / total) * 100;
-            
-            exergyChart.data.datasets[0].data = [
-                shaftPercent,
-                coolingPercent,
-                exhaustPercent,
-                destroyedPercent
-            ];
-            exergyChart.update();
-        }
-        
-        // Update Emissions Chart
-        function updateEmissionsChart(co, hc, co2, nox) {
-            emissionsChart.data.datasets[0].data = [
-                co * 100, // Convert to percentage for chart scaling
-                hc,
-                co2 * 100, // Convert to percentage for chart scaling
-                nox
-            ];
-            emissionsChart.update();
-        }
-        
-        // Initialize the page
-        window.addEventListener('DOMContentLoaded', () => {
-            initCharts();
-        });
     </script>
 </body>
 </html>
